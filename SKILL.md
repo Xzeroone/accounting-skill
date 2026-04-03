@@ -1,11 +1,47 @@
 ---
 name: accounting
-description: "Use this skill when the user needs to set up bookkeeping, track revenue and expenses, prepare for taxes, choose accounting software, understand revenue recognition, or manage the financial operations of their business in any country. Covers international accounting standards (IFRS, US GAAP, and regional variants), global tax systems, multi-region software recommendations, entity types, e-invoicing compliance, and financial hygiene for businesses of all sizes."
+version: "1.1.0"
+data_as_of: "2025-Q1"
+description: "International accounting & bookkeeping for any country. Covers IFRS, US GAAP, global tax systems, e-invoicing compliance, entity types, and regional software recommendations."
 ---
 
 # Accounting & Bookkeeping — International Reference
 
 Messy books cost you money in taxes, missed deductions, and accountant fees. This skill helps you set up clean financial tracking from day one — regardless of which country you operate in. 30 minutes a week keeps you legal, informed, and out of trouble.
+
+## Agent Instructions
+
+**Before giving any accounting advice, always ask the user:**
+1. What country are you operating in?
+2. What type of entity (sole proprietor, Ltd, GmbH, LLC, etc.)?
+3. What stage (pre-revenue, early revenue, growing, established)?
+
+**Behavioral rules:**
+- Filter your response to only the relevant country/region. Do NOT dump the entire reference at the user.
+- Never give specific tax advice — always recommend consulting a local qualified professional (CPA, CA, ACCA, Steuerberater, etc.).
+- When the user mentions a specific country, use that country's terminology (e.g., "Trade Debtors" not "Accounts Receivable" for UK users).
+- Tax rates and e-invoicing mandates change frequently. When in doubt, advise the user to verify current rates with their local tax authority.
+- For multi-country operations, address each country separately and flag potential transfer pricing / double taxation issues.
+
+## Quick Start
+
+Use this decision tree to navigate the reference:
+
+```
+User's question is about...
+│
+├── Which accounting standard? → Section 1 (Accounting Standards Worldwide)
+├── Setting up bookkeeping?    → Section 2 (Getting Started) + Section 7 (Chart of Accounts)
+├── Taxes / VAT / GST?         → Section 3 (Tax Systems) — find their country
+├── Which entity type?         → Section 4 (Business Entity Types)
+├── Which software?            → Section 5 (Accounting Software) — find their region
+├── E-invoicing compliance?    → Section 6 (E-Invoicing) — find their country
+├── Weekly/monthly routine?    → Section 8 (Bookkeeping Routine)
+├── Revenue recognition?       → Section 9 (Revenue Recognition)
+├── Financial reports?         → Section 10 (Financial Reports)
+├── Multi-currency?            → Section 11 (Multi-Currency Accounting)
+└── Common mistakes?           → Section 12 (Common Mistakes)
+```
 
 ## Core Principles
 
@@ -578,7 +614,56 @@ Review quarterly. Needed for:
 
 ---
 
-## 11. Common Mistakes (Global)
+## 11. Multi-Currency Accounting
+
+For businesses operating across borders, multi-currency accounting is essential.
+
+### Key Concepts
+
+| Concept | Definition |
+|---|---|
+| **Functional currency** | The primary currency of the business's main economic environment (usually where it's headquartered) |
+| **Presentation currency** | The currency in which financial statements are presented |
+| **Foreign currency transaction** | A transaction denominated in a currency other than the entity's functional currency |
+| **Exchange rate** | The rate between two currencies. Use spot rate on transaction date for most transactions. |
+
+### How to Handle Multi-Currency Transactions
+
+**On the transaction date:**
+- Record the transaction using the spot exchange rate on that date
+- Example: You invoice €1,000 when EUR/USD = 1.08. Record $1,080 as the receivable.
+
+**On the balance sheet date:**
+- Revalue foreign currency monetary items (receivables, payables, cash) using the closing rate
+- Recognize FX gains/losses in the P&L (required under both IFRS and US GAAP)
+
+**On settlement date:**
+- Record the difference between the original rate and the settlement rate as an FX gain or loss
+
+### Practical Tips
+
+- Use accounting software with built-in multi-currency support (Xero, NetSuite, QuickBooks Multi-Currency)
+- Maintain separate bank accounts in each major currency to reduce conversion costs
+- Consider hedging strategies for large recurring foreign currency exposures
+- Track FX gains/losses separately — they have different tax treatment in many countries
+- For EU businesses: most accounting software auto-updates ECB daily rates
+- For US businesses: use the IRS yearly average rates for tax reporting
+
+### Country-Specific Notes
+
+| Country | Notes |
+|---|---|
+| **US** | No specific functional currency rules for small businesses. IRS requires USD reporting. Use yearly average rates for tax. |
+| **UK** | Companies Act requires GBP presentation. IAS 21 / FRS 102 Section 23 governs foreign currency translation. |
+| **EU (IFRS)** | IAS 21 "The Effects of Changes in Foreign Exchange Rates" applies. Strict rules on rate selection and gain/loss recognition. |
+| **Australia** | AASB 121 (equivalent to IAS 21). AUD presentation for Australian entities. |
+| **India** | AS 11 governs foreign currency transactions. INR functional currency for Indian entities. |
+| **Japan** | J-GAAP has specific foreign currency translation rules. JPY functional currency. |
+| **Brazil** | CPC 42 / IAS 21 equivalent. BRL functional currency. Central bank publishes official rates. |
+
+---
+
+## 12. Common Mistakes (Global)
 
 | Mistake | Fix |
 |---|---|
@@ -597,7 +682,7 @@ Review quarterly. Needed for:
 
 ---
 
-## 12. When to Hire Professional Help
+## 13. When to Hire Professional Help
 
 | Stage | Recommendation |
 |---|---|
@@ -615,7 +700,7 @@ Review quarterly. Needed for:
 
 ---
 
-## 13. Success Looks Like
+## 14. Success Looks Like
 
 - Clean books that take 30 minutes/week to maintain
 - Tax payments estimated and saved on schedule (no surprises)
@@ -628,7 +713,7 @@ Review quarterly. Needed for:
 
 ---
 
-## 14. Key Terminology: US vs UK/International
+## 15. Key Terminology: US vs UK/International
 
 | US English | UK/International |
 |---|---|
@@ -646,9 +731,12 @@ Review quarterly. Needed for:
 
 ---
 
-## Related Skills
+## Data Freshness
 
-- **finances** — Financial modeling, unit economics, and cash flow planning
-- **payments** — Set up payment processors and connect to your accounting software
-- **legal** — Business entity formation and legal compliance
-- **pricing** — Set pricing that supports healthy unit economics
+Tax rates, e-invoicing mandates, and software features change frequently. The data in this skill was compiled in **2025-Q1**. Always verify current rates and requirements with the user's local tax authority or a qualified professional.
+
+---
+
+## License
+
+This skill is released under the MIT License. You are free to use, modify, and redistribute it.
