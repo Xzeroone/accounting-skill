@@ -1,7 +1,7 @@
 ---
 name: accounting
-version: "1.1.0"
-data_as_of: "2025-Q1"
+version: "1.2.0"
+data_as_of: "2026-Q1"
 description: "International accounting & bookkeeping for any country. Covers IFRS, US GAAP, global tax systems, e-invoicing compliance, entity types, and regional software recommendations."
 ---
 
@@ -15,6 +15,8 @@ Messy books cost you money in taxes, missed deductions, and accountant fees. Thi
 1. What country are you operating in?
 2. What type of entity (sole proprietor, Ltd, GmbH, LLC, etc.)?
 3. What stage (pre-revenue, early revenue, growing, established)?
+4. Approximate annual revenue range (helps determine which thresholds and regimes apply)?
+5. What industry (SaaS, retail, professional services, manufacturing, etc. — affects COGS structure and applicable deductions)?
 
 **Behavioral rules:**
 - Filter your response to only the relevant country/region. Do NOT dump the entire reference at the user.
@@ -40,7 +42,11 @@ User's question is about...
 ├── Revenue recognition?       → Section 9 (Revenue Recognition)
 ├── Financial reports?         → Section 10 (Financial Reports)
 ├── Multi-currency?            → Section 11 (Multi-Currency Accounting)
-└── Common mistakes?           → Section 12 (Common Mistakes)
+├── Common mistakes?           → Section 12 (Common Mistakes)
+├── Payroll / employees?       → Section 15 (Payroll & Employer Obligations)
+├── Multi-country / cross-border? → Section 16 (Transfer Pricing & Double Taxation)
+├── Tax credits / R&D?         → Section 17 (Tax Credits & Incentives)
+└── Terminology differences?   → Section 18 (Key Terminology: US vs UK)
 ```
 
 ## Core Principles
@@ -69,6 +75,12 @@ User's question is about...
 - Rules-based (detailed, specific guidance for every scenario)
 - No current plans to converge with IFRS
 
+**IFRS for SMEs (Small and Medium-sized Entities)**
+- Simplified version of full IFRS, designed for private companies without public accountability
+- Used in 80+ jurisdictions for qualifying SMEs — especially common in Africa, Caribbean, parts of Latin America
+- Significantly less complex than full IFRS (~300 pages vs ~3,000+ pages)
+- If the user's country allows IFRS for SMEs and they are a private company, this is often the simplest compliant option
+
 ### Key IFRS vs US GAAP Differences
 
 | Aspect | US GAAP | IFRS |
@@ -77,7 +89,7 @@ User's question is about...
 | LIFO inventory | Allowed | **Prohibited** |
 | Development costs | Generally expensed | Capitalized when criteria met |
 | Reversal of impairment | Prohibited | Allowed |
-| Lease accounting | Finance vs operating distinction | Single lessee model |
+| Lease accounting | Single lessee model (ASC 842) | Single lessee model (IFRS 16) — largely converged |
 
 ### Standards by Region
 
@@ -89,7 +101,7 @@ User's question is about...
 | **Germany** | IFRS (listed consolidated) / HGB (private) | HGB is more conservative, tax-driven |
 | **France** | IFRS (listed) / PCG (private) | PCG is a prescriptive national chart of accounts |
 | **Australia** | AASB (IFRS-aligned) | IFRS with minor Australian modifications |
-| **Japan** | J-GAAP / IFRS (voluntary for listed) | Many large companies voluntarily adopted IFRS |
+| **Japan** | J-GAAP / IFRS (mandatory for some listed, voluntary for others) | Large listed companies increasingly required to adopt IFRS. Many voluntarily use it. |
 | **China** | CAS (China GAAP) | ~90-95% converged with IFRS |
 | **India** | Ind AS | Substantially converged with IFRS (with carve-outs) |
 | **Brazil** | BR GAAP (CPC) | Substantially converged with IFRS |
@@ -100,6 +112,7 @@ User's question is about...
 | **Most of EU** | IFRS (listed) / National GAAP (private) | Each country has its own GAAP for private entities |
 | **Most of Africa** | IFRS | Required in most countries |
 | **OHADA countries** | OHADA Uniform Act | 14+ francophone West/Central African countries |
+| **Switzerland** | Swiss GAAP FER / OR (Code of Obligations) | FER is a recognized framework for SMEs. OR is the legal basis. Large companies use IFRS. |
 
 **When advising:** Always identify which standard applies to the user's country and entity type. Listed/public companies typically use IFRS or US GAAP. Private/small companies often use simplified national standards.
 
@@ -155,13 +168,13 @@ Not every country uses January–December:
 
 **Important:** Companies in most countries can elect a non-standard year-end for corporate tax. Personal tax almost always follows the country's standard fiscal year.
 
-### Corporate Tax Rates (Key Countries, 2025)
+### Corporate Tax Rates (Key Countries, 2026)
 
 | Country | Rate | Notes |
 |---|---|---|
 | United States | 21% federal + ~4.5% state avg | Combined ~25.5% |
 | United Kingdom | 19–25% | Marginal rate based on profit level |
-| Germany | ~30% | 15% federal + ~15% trade tax |
+| Germany | ~30% | 15% federal + trade tax (varies ~7–17% by municipality; ~15% average) |
 | France | ~25% | |
 | Japan | ~29.7% | Combined national + local |
 | Australia | 25–30% | 25% for small businesses |
@@ -214,6 +227,16 @@ Most countries require periodic advance tax payments:
 
 **Rule of thumb:** Set aside 25–35% of net profit for taxes, adjusted for your country's rates. Transfer to a separate savings account each month.
 
+### Global Minimum Tax (Pillar Two)
+
+Over 140 countries signed onto the OECD/G20 Inclusive Framework's Pillar Two rules, introducing a **15% global minimum effective tax rate** for multinational enterprises with consolidated revenue above **€750 million**. Key points:
+
+- Applies to groups with revenue >€750M in at least 2 of the 4 preceding years
+- Top-up tax imposed in the parent company's jurisdiction if subsidiaries in other countries are taxed below 15%
+- Implementation is rolling out 2024–2026 across most jurisdictions
+- Even businesses below the €750M threshold may be affected if they are part of a larger group
+- **For most SMEs and startups, Pillar Two does not apply.** But if the user is part of a large multinational group or growing toward that scale, flag this.
+
 ### Common Business Deductions (Universal)
 
 Most countries allow deductions for:
@@ -240,12 +263,12 @@ Most countries allow deductions for:
 | Country | Key Requirements |
 |---|---|
 | **US** | Self-employment tax 15.3% + income tax. Quarterly estimates. Schedule C + SE. |
-| **UK** | Self-Assessment. Class 2 + Class 4 National Insurance. Trading allowance: £1,000 tax-free. |
+| **UK** | Self-Assessment. Class 4 National Insurance (Class 2 voluntary only since Apr 2024). Trading allowance: £1,000 tax-free. |
 | **Germany** | Income tax 14–45%. VAT registration. Kleinunternehmerregelung exempts <€22K turnover from VAT. |
 | **France** | Micro-entrepreneur regime: flat-rate social charges ~22% for services. URSSAF collects. |
 | **Australia** | ABN required. GST at A$75K threshold. PAYG quarterly installments. |
 | **Canada** | Report on personal return. GST/HST at C$30K. CPP contributions both portions. |
-| **India** | Presumptive taxation (Section 44AD): 8% of turnover deemed income for <₹2Cr. GST at ₹20–40L. |
+| **India** | Presumptive taxation (Section 44AD): 6% of digital turnover / 8% of non-digital turnover deemed income for <₹2Cr. GST at ₹20–40L. |
 | **Singapore** | Taxed at personal rates (0–22%). No separate SE tax. No capital gains tax. |
 | **UAE** | No personal income tax. 9% corporate tax above AED 375K. No personal tax for freelancers. |
 | **Spain** | Autónomo registration. Social security ~€300/month minimum. Quarterly filings. |
@@ -268,6 +291,7 @@ Most countries allow deductions for:
 | **Japan** | KK, GK | KK = stock company, prestigious. GK = LLC-like, simpler, cannot go public. |
 | **Brazil** | LTDA, S.A., MEI | MEI = simplified micro-entrepreneur (~R$81K revenue cap). LTDA = most common. |
 | **UAE** | FZ-LLC, LLC, FZE | FZ-LLC = 100% foreign ownership in free zones. Mainland LLC = 100% foreign now possible in most sectors. |
+| **Switzerland** | AG (SA), GmbH (Sàrl), Sole proprietorship | AG = stock corporation, min CHF 100K capital. GmbH = limited liability, min CHF 20K. Popular for holding companies. |
 
 ### Bookkeeping Legal Requirements
 
@@ -302,7 +326,7 @@ Most countries allow deductions for:
 | UAE | 5–7 years |
 | China | 15 years (among the longest globally) |
 | Switzerland | 10 years |
-| **Global baseline** | **10 years** is the most common retention period worldwide |
+| **Global baseline** | **5–7 years** is the most common worldwide; 10 years in many EU/BR/CH |
 
 **Mandatory audit thresholds (key countries):**
 | Country | Threshold |
@@ -328,10 +352,11 @@ Most countries allow deductions for:
 | **Zoho Books** | India, UAE, EU, global SMBs | 100+ countries | Affordable, country-specific tax editions (GST, VAT, sales tax). |
 | **Sage** | UK, Europe, South Africa | Global | Strong UK VAT (MTD compliant). Sage/Pastel dominates South Africa (~90% market). |
 | **FreshBooks** | Service businesses, US/CA/UK/AU | English-speaking | Best for invoicing-focused service businesses. |
-| **Wave** | Freelancers, US/Canada | US, Canada only | Free but very limited international support. |
+| **Wave** | Freelancers, US/Canada/UK | US, Canada, UK | Free but very limited international support. |
 | **SAP Business One** | Mid-market, global | 100+ countries | Extensive localization. Requires significant implementation. |
 | **Oracle NetSuite** | Scaling internationally | Global | Multi-subsidiary, multi-currency, multi-tax. Strong for global expansion. |
 | **Odoo** | Open-source, global | Global | Community-built localizations. Coverage varies by country. |
+| **Microsoft Dynamics 365 Business Central** | Mid-market, global | 100+ countries | Strong localization, integrates with Microsoft ecosystem. Growing cloud presence. |
 
 ### Europe-Specific
 
@@ -393,6 +418,8 @@ Most countries allow deductions for:
 
 This is one of the most important and rapidly changing areas of global accounting. **90+ countries** have implemented or announced e-invoicing mandates.
 
+> ⚠️ **E-invoicing mandate dates are subject to frequent delays and changes.** Poland KSeF, France PPF, and Germany ZUGFeRD issuance dates have all been pushed back multiple times. Always verify current status with the relevant tax authority before making compliance decisions.
+
 ### Clearance Model (Pre-Authorization Required)
 
 These countries require invoices to be validated by the tax authority before or shortly after issuance:
@@ -414,6 +441,8 @@ These countries require invoices to be validated by the tax authority before or 
 | **Greece** | myDATA | 2026 | MARK validation within 48 hours. |
 | **Malaysia** | MyInvois | Phased 2025–2026 | 55 mandatory fields, QR code, real-time UIN. |
 | **China** | Golden Tax / Fapiao | Ongoing | Fapiao issuance through tax-controlled systems. |
+| **Romania** | RO e-Factura | Mandatory since 2024 | Mandatory B2B via SPV portal. First EU country to mandate after Italy. |
+| **Peru** | Sistema de Emisión Electrónica (SEE) | Mandatory since 2018 | CPE electronic invoices via SUNAT. |
 
 ### Post-Audit / Periodic Reporting Model
 
@@ -438,7 +467,7 @@ The EU's **ViDA (VAT in the Digital Age)** directive will harmonize e-invoicing 
 
 ## 7. Chart of Accounts (Universal Template)
 
-Adapt this template to your country's requirements and chart of account standards:
+Adapt this template to your country's requirements and chart of account standards. In many countries (Germany SKR03/04, France PCG, India Schedule III), the chart of accounts and financial statement formats are legally prescribed — always use the local mandatory format where one exists.
 
 ```
 ASSETS
@@ -464,15 +493,13 @@ EQUITY
 
 REVENUE
   Product/Service Revenue
-  Subscription Revenue (MRR)
-  One-Time Revenue
   Other Income
 
-COST OF GOODS SOLD (COGS)
-  Direct Materials
-  Hosting & Infrastructure
-  Payment Processing Fees
-  Third-Party Services
+COST OF GOODS SOLD (COGS) / COST OF SALES
+  Direct Materials / Raw Materials
+  Direct Labour
+  Shipping & Delivery
+  Subcontractors / Third-Party Services
 
 OPERATING EXPENSES
   Salaries & Wages
@@ -493,6 +520,12 @@ OTHER
   Owner Draw / Distribution
   Owner Contribution / Capital Injection
 ```
+
+**Industry-specific additions:**
+- **SaaS / Tech:** Add `Subscription Revenue (MRR)`, `Hosting & Infrastructure`, `Payment Processing Fees` under Revenue/COGS
+- **Retail / E-commerce:** Add `Purchase Returns & Allowances`, `Freight-In`, `Packaging Materials` under COGS
+- **Professional Services:** Add `Billable Hours Revenue`, `Contractor Costs` under Revenue/COGS
+- **Manufacturing:** Add `Work-in-Progress`, `Finished Goods`, `Manufacturing Overhead` under Assets/COGS
 
 **Country-specific adaptations:**
 - **Germany (HGB):** Must follow SKR03 or SKR04 standard chart of accounts
@@ -561,6 +594,8 @@ Why: You owe them 12 months of service. Until delivered, it's "deferred revenue"
 | **Cash-basis** | Pre-revenue to ~$50K ARR, small businesses | Revenue = when you get paid. Simpler. Accepted for tax in many countries for small businesses. |
 | **Accrual-basis** | Post-$50K ARR, seeking investment, required by IFRS/GAAP for larger entities | Revenue = when earned. More accurate. Required by most accounting standards for incorporated entities above thresholds. |
 
+> **Note:** The $50K ARR thresholds above are approximate US-centric guidelines. Many countries have specific local thresholds that determine cash vs accrual eligibility (e.g., Germany §4(3) EÜR at €75K profit, UK VAT cash accounting at £90K turnover). Always check your country's rules.
+
 **Country-specific notes:**
 - Many countries allow small businesses to use cash-basis for tax (e.g., UK cash-basis for VAT, Germany EÜR for small businesses)
 - Incorporated entities typically must use accrual-basis for financial reporting
@@ -571,7 +606,7 @@ Why: You owe them 12 months of service. Until delivered, it's "deferred revenue"
 - **Pre-$50K ARR / micro-business:** Cash-basis is simpler and usually fine for tax
 - **Post-$50K ARR or seeking investment:** Switch to accrual-basis with proper revenue recognition
 - **Annual/long-term contracts:** Always recognize over the service period
-- **Lifetime deals:** Recognize over expected customer lifetime (usually 3–5 years)
+- **Lifetime deals:** Requires professional judgment under IFRS 15 / ASC 606 — generally recognized over the expected service period, but treatment depends on whether it constitutes a separate performance obligation. No simple rule of thumb; consult a qualified accountant.
 
 ---
 
@@ -713,9 +748,92 @@ For businesses operating across borders, multi-currency accounting is essential.
 
 ---
 
-## 15. Key Terminology: US vs UK/International
+## 15. Payroll & Employer Obligations
 
-| US English | UK/International |
+Payroll is one of the most compliance-heavy areas of business accounting. Errors lead to penalties in virtually every jurisdiction.
+
+### Key Employer Obligations by Country
+
+| Country | Income Tax Withholding | Social Security / Contributions | Key Filing |
+|---|---|---|---|
+| **US** | Federal + State withholding | FICA (Social Security 6.2% + Medicare 1.45%, employer-matched). FUTA + SUTA. | Form 941 quarterly, W-2 annually |
+| **UK** | PAYE (Pay As You Earn) | Employer NIC: 13.8% above £175/week. Auto-enrolment pension: min 3% employer. | RTI payroll reporting each pay period, P60 annually |
+| **Germany** | Lohnsteuer (wage tax) | Employer social: ~20% of gross (pension, health, unemployment, nursing care). | Monthly payroll reports to tax office |
+| **France** | Prélèvement à la source | Employer charges: ~25–45% of gross (very high). URSSAF collects. | Monthly DSN (Déclaration Sociale Nominative) |
+| **Australia** | PAYG withholding | Superannuation: 11.5% employer contribution (rising to 12% Jul 2025). | Single Touch Payroll (STP) each pay cycle |
+| **Canada** | Federal + provincial withholding | CPP + EI employer contributions (1.4× EI rate). | T4 slips annually, payroll remittance monthly/quarterly |
+| **India** | TDS (Tax Deducted at Source) | EPF (12% employer + 12% employee), ESI (3.25% employer). | Monthly TDS returns, annual Form 16 |
+| **Japan** | Income tax withholding | Social insurance: ~15% combined employer share. | Annual withholding report by January 31 |
+| **Singapore** | No withholding on local employees | CPF: 17% employer contribution (age-dependent). | Monthly CPF contribution |
+| **UAE** | No income tax | No mandatory social security for expats. GPSSA for UAE nationals (12.5%). | Minimal |
+| **Brazil** | IRRF (income tax) | INSS employer: ~20% + FGTS 8% + other charges. | eSocial monthly reporting |
+
+**Key rule:** In most countries, the employer's total cost is **1.2–1.4×** the employee's gross salary (even higher in France at ~1.4–1.6×). Budget accordingly.
+
+---
+
+## 16. Transfer Pricing & Double Taxation
+
+### Transfer Pricing
+
+When a business operates in multiple countries or has related-party transactions, **transfer pricing** rules require that transactions between related entities be priced as if they were between independent parties (the "arm's length principle").
+
+- Governed by OECD Transfer Pricing Guidelines (adopted by 140+ countries)
+- Applies to: inter-company sales of goods, services, IP licensing, loans, management fees
+- **Documentation requirements:** Most countries require contemporaneous documentation proving arm's length pricing
+- **Penalties for non-compliance:** Can be severe — adjustments, interest, and penalties of 20–200% of the tax understated
+
+**When it matters:**
+- Multi-entity groups operating across borders
+- Parent-subsidiary transactions
+- Related-party service agreements
+- IP licensing between group companies
+
+### Double Taxation Treaties
+
+Countries sign Double Taxation Agreements (DTAs/DTTs) to prevent the same income from being taxed in both countries. Over 3,000 bilateral tax treaties exist worldwide.
+
+**Key mechanisms:**
+- **Exemption method:** Income taxed in one country is exempt in the other
+- **Credit method:** Tax paid in one country can be credited against tax owed in the other
+- **Tie-breaker rules:** For individuals resident in two countries, treaties determine which country has primary taxing rights
+
+**When to flag:** If the user has income from or operations in multiple countries, always check whether a DTA exists between those countries and how it affects their tax position. Recommend a specialist for cross-border tax planning.
+
+---
+
+## 17. Tax Credits & Incentives
+
+Many countries offer tax credits and incentives that can significantly reduce tax liability:
+
+### R&D Tax Credits / Incentives
+
+| Country | Incentive | Key Details |
+|---|---|---|
+| **US** | R&D Tax Credit (IRC §41) | ~20% credit on qualifying R&D expenses. Now must be amortized over 5 years (domestic) or 15 years (foreign) under TCJA. |
+| **UK** | R&D Tax Credits | SME scheme: up to 33% refundable credit on qualifying spend. RDEC scheme for large companies: 20% credit. |
+| **France** | Crédit Impôt Recherche (CIR) | 30% credit on R&D spend up to €100M, 5% above. One of the most generous globally. |
+| **Canada** | SR&ED Tax Credit | Up to 35% refundable for Canadian-controlled private corporations. |
+| **Australia** | R&D Tax Incentive | 43.5% refundable for companies with <A$20M turnover (18.5% above). |
+| **India** | Section 80JJAA | 30% deduction on additional employee costs for new employees in eligible sectors. |
+| **Singapore** | Enterprise Development Grant | Covers up to 50% of qualifying project costs. |
+
+### Other Common Incentives
+
+- **Investment allowances:** Accelerated depreciation, investment tax credits (common in developing economies)
+- **Regional incentives:** Tax breaks for operating in specific geographic zones (e.g., UAE free zones, India SEZs, China special economic zones)
+- **Startup incentives:** Tax holidays or reduced rates for new businesses (Singapore startup tax exemption, France jeunes entreprises innovantes)
+- **Green incentives:** Credits for renewable energy, EV purchases, energy-efficient buildings (expanding rapidly)
+
+**When advising:** Always ask if the user is doing any R&D, innovation, or hiring. They may qualify for credits they're not aware of.
+
+---
+
+## 18. Key Terminology: US vs UK
+
+> Note: Many other countries (Australia, Canada, NZ, India, Singapore) use a mix of both terminologies. When in doubt, use the user's country's preferred terms.
+
+| US English | UK English |
 |---|---|
 | Income Statement | Profit & Loss Account |
 | Inventory | Stock |
@@ -731,9 +849,13 @@ For businesses operating across borders, multi-currency accounting is essential.
 
 ---
 
-## Data Freshness
+## Disclaimer
 
-Tax rates, e-invoicing mandates, and software features change frequently. The data in this skill was compiled in **2025-Q1**. Always verify current rates and requirements with the user's local tax authority or a qualified professional.
+**This skill provides general reference information, not tax, legal, or accounting advice.** Tax rates, thresholds, e-invoicing mandates, and regulatory requirements change frequently. The data was compiled in **2026-Q1** and may be outdated for any specific country.
+
+- Always verify current rates and requirements with the user's local tax authority or a qualified professional before making any decisions.
+- Do not rely solely on this reference for filing taxes, choosing accounting methods, or determining compliance obligations.
+- When in doubt, recommend the user consult a local certified professional (CPA, CA, ACCA, Steuerberater, Expert-Comptable, etc.).
 
 ---
 
